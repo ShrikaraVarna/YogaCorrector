@@ -1,0 +1,40 @@
+.about-container {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(90deg, #00bfff, #daa520);
+  text-align: center;
+}
+.about-header {
+  background: linear-gradient(100deg, #6495ed, #9932cc);
+  width: 100vw;
+  height: 80px;
+  align-items: center;
+}
+
+.about-heading {
+  padding: 0px;
+  margin: 0px;
+  font-size: 54px;
+  margin-left: 30px;
+  color: white;
+  font-family: "Kaushan Script", cursive;
+}
+.about-main {
+  margin: auto;
+  width: 70%;
+}
+.about-content {
+  color: white;
+  font-size: 28px;
+}
+.developer-info h4 {
+  color: black;
+  font-family: "Raleway", sans-serif;
+  margin-top: 20px;
+  font-size: 34px;
+  text-decoration: underline;
+}
+.about-content a,
+.developer-info a {
+  color: white;
+}
