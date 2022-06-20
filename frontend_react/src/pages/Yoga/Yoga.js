@@ -1,11 +1,11 @@
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import * as tf from "@tensorflow/tfjs";
 import React, { useRef, useState, useEffect } from "react";
-import backend from "@tensorflow/tfjs-backend-webgl";
 import Webcam from "react-webcam";
 import { count } from "../../utils/music";
 import { Alert, Dialog } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import Speech from "react-speech";
 
 import Instructions from "../../components/Instrctions/Instructions";
 
@@ -15,7 +15,6 @@ import DropDown from "../../components/DropDown/DropDown";
 import { poseImages } from "../../utils/pose_images";
 import { POINTS, keypointConnections } from "../../utils/data";
 import { drawPoint, drawSegment } from "../../utils/helper";
-import { logSigmoid } from "@tensorflow/tfjs";
 
 let skeletonColor = "rgb(255,255,255)";
 let poseList = [
@@ -35,6 +34,8 @@ let poseList = [
 ];
 
 let interval;
+let text = "";
+let url = "http://127.0.0.1:8000/json?finaldata=";
 
 // flag variable is used to help capture the time when AI just detect
 // the pose as correct(probability more than threshold)
@@ -46,7 +47,7 @@ function Yoga() {
 
   const [poseDone, setPoseDone] = React.useState("");
 
-  const [text, setText] = React.useState("");
+  //const [text, setText] = React.useState("");
 
   const [accuracy, setAccuracy] = React.useState(0);
   const [alertOpen, setAlertOpen] = React.useState(false);
@@ -57,6 +58,26 @@ function Yoga() {
   const [bestPerform, setBestPerform] = useState(0);
   const [currentPose, setCurrentPose] = useState("Tadasana");
   const [isStartPose, setIsStartPose] = useState(false);
+  const [allSlopes, setAllSLopes] = useState({});
+
+  const getData = () => {
+    fetch("slopes.json", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (myJson) {
+        setAllSLopes(myJson);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(() => {
     const timeDiff = (currentTime - startingTime) / 1000;
@@ -112,6 +133,49 @@ function Yoga() {
     const center = tf.add(tf.mul(left, 0.5), tf.mul(right, 0.5));
     return center;
   }
+
+  const check_if_arms_straight = (keypoints, currentPose) => {
+    let left_slope =
+      (keypoints[9].y - keypoints[5].y) / (keypoints[9].x - keypoints[5].x);
+    let right_slope =
+      (keypoints[10].y - keypoints[6].y) / (keypoints[10].x - keypoints[6].x);
+    if (
+      allSlopes[currentPose].right_arm_min > right_slope ||
+      allSlopes[currentPose].right_arm_max < right_slope
+    ) {
+      let newText = text + " Your right arm isn't as it should be.";
+      text = newText;
+    }
+    if (
+      allSlopes[currentPose].left_arm_min > left_slope ||
+      allSlopes[currentPose].left_arm_max < left_slope
+    ) {
+      let newText =
+        text + " Try to maintain your left arm as shown in the image.";
+      //setText(newText);
+      text = newText;
+    }
+  };
+
+  const check_if_right_knee_straight = (keypoints, currentPose) => {
+    let slope =
+      (keypoints[12].y - keypoints[16].y) / (keypoints[12].x - keypoints[16].y);
+    if (slope > 0.4) {
+      let newText = text + " Your right isn't aligned properly.";
+      //setText(newText);
+      text = newText;
+    }
+  };
+
+  const check_if_left_knee_straight = (keypoints, currentPose) => {
+    let slope =
+      (keypoints[11].y - keypoints[15].y) / (keypoints[11].x - keypoints[15].y);
+    if (slope > 0.4) {
+      let newText = text + " Your left knee is also not properly placed.";
+      //setText(newText);
+      text = newText;
+    }
+  };
 
   function get_pose_size(landmarks, torso_size_multiplier = 2.5) {
     let hips_center = get_center_point(
@@ -226,6 +290,7 @@ function Yoga() {
           return [keypoint.x, keypoint.y];
         });
         if (notDetected > 4) {
+          text = "";
           setAlertOpen(false);
           skeletonColor = "rgb(255,0,0)";
           return;
@@ -249,6 +314,7 @@ function Yoga() {
             showAccuracyValue(false);
             setPoseDone(Pose_NO[highestClass]);
             skeletonColor = "rgb(0,0,0)";
+            text = "";
             countAudio.pause();
           } else {
             setAlertOpen(false);
@@ -262,9 +328,18 @@ function Yoga() {
                 flag = true;
                 setCurrentTime(new Date(Date()).getTime());
                 skeletonColor = "rgb(0,255,0)";
+                check_if_arms_straight(keypoints, currentPose);
+                check_if_left_knee_straight(keypoints, currentPose);
+                check_if_right_knee_straight(keypoints, currentPose);
+                let newText = text + " Please see the image being displayed.";
+                text = newText;
+                url = url + text;
+                console.log(newText);
+                //setText(newText);
               }
               setCurrentTime(new Date(Date()).getTime());
             } else {
+              text = "";
               flag = false;
               skeletonColor = "rgb(0,0,255)";
               countAudio.pause();
@@ -281,6 +356,7 @@ function Yoga() {
   function startYoga() {
     setIsStartPose(true);
     runMovenet();
+    <Speech text={text} />;
   }
 
   function stopPose() {
@@ -351,11 +427,15 @@ function Yoga() {
               alignItems: "center",
             }}
           >
-            <Typography variant="h1" component="h2">
-              You are doing a good job. Your accuracy is {accuracy}
+            <Typography variant="h1" component="h3">
+              Your accuracy is {accuracy}.
+            </Typography>
+            <Typography variant="h3" component="h3">
+              {text}
             </Typography>
           </div>
         ) : null}
+        <Speech text={text} voice="Google UK English Female" />
       </div>
     );
   }

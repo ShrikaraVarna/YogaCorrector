@@ -1,0 +1,106 @@
+{
+  "adho mukha svanasana": {
+    "adho mukha svanasana": {
+      "left_arm_min": -1.3664596273291925,
+      "left_arm_max": 1.125,
+      "right_arm_min": -1.5034965034965035,
+      "right_arm_max": 1.1481481481481481
+    }
+  },
+  "adho mukha vriksasana": {
+    "adho mukha vriksasana": {
+      "left_arm_min": -31.666666666666668,
+      "left_arm_max": 115.0,
+      "right_arm_min": -100.0,
+      "right_arm_max": 32.0
+    }
+  },
+  "bhekasana": {
+    "bhekasana": {
+      "left_arm_min": -32.666666666666664,
+      "left_arm_max": 0.9387755102040817,
+      "right_arm_min": -0.4198473282442748,
+      "right_arm_max": 1.0952380952380953
+    }
+  },
+  "bhujangasana": {
+    "bhujangasana": {
+      "left_arm_min": -49.0,
+      "left_arm_max": 26.0,
+      "right_arm_min": -15.0,
+      "right_arm_max": 76.5
+    }
+  },
+  "chakravakasana": {
+    "chakravakasana": {
+      "left_arm_min": "-Infinity",
+      "left_arm_max": 238.0,
+      "right_arm_min": "-Infinity",
+      "right_arm_max": 85.0
+    }
+  },
+  "eka pada koundinyanasana i": {
+    "eka pada koundinyanasana i": {
+      "left_arm_min": -1.53125,
+      "left_arm_max": 1.496124031007752,
+      "right_arm_min": -7.25,
+      "right_arm_max": 2.08
+    }
+  },
+  "padmasana": {
+    "padmasana": {
+      "left_arm_min": -3.2,
+      "left_arm_max": 3.716666666666667,
+      "right_arm_min": -5.853658536585366,
+      "right_arm_max": 2.2916666666666665
+    }
+  },
+  "simhasana": {
+    "simhasana": {
+      "left_arm_min": -12.096774193548388,
+      "left_arm_max": 47.5,
+      "right_arm_min": -77.0,
+      "right_arm_max": 12.476190476190476
+    }
+  },
+  "tadasana": {
+    "tadasana": {
+      "left_arm_min": -19.75,
+      "left_arm_max": 90.0,
+      "right_arm_min": -29.666666666666668,
+      "right_arm_max": 0.6756756756756757
+    }
+  },
+  "trikoasana": {
+    "trikoasana": {
+      "left_arm_min": -56.0,
+      "left_arm_max": "Infinity",
+      "right_arm_min": -67.0,
+      "right_arm_max": 50.0
+    }
+  },
+  "virabhadrasana i": {
+    "virabhadrasana i": {
+      "left_arm_min": -81.6,
+      "left_arm_max": 67.0,
+      "right_arm_min": "-Infinity",
+      "right_arm_max": 45.333333333333336
+    }
+  },
+  "virabhadrasana ii": {
+    "virabhadrasana ii": {
+      "left_arm_min": -4.153846153846154,
+      "left_arm_max": 17.25,
+      "right_arm_min": "-Infinity",
+      "right_arm_max": 1.3454545454545455
+    }
+  },
+  "virabhadrasana iii": {
+    "virabhadrasana iii": {
+      "left_arm_min": -4.153846153846154,
+      "left_arm_max": 17.25,
+      "right_arm_min": "-Infinity",
+      "right_arm_max": 1.3454545454545455
+    }
+  }
+}
